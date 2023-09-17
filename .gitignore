@@ -31,4 +31,6 @@
 *.out
 *.app
 /.vs
+
+# Build directory
 /Build
