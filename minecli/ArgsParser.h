@@ -6,17 +6,17 @@
 class ArgsParser
 {
 
-struct Option {
-	std::string name;
-	bool& is_active;
+private:
+    struct Option {
+        std::string name;
+        bool& is_active;
 
-	bool operator==(std::string value) const { return this->name == value; }
-};
+        bool operator==(const std::string& value) const { return this->name == value; }
+    };
 
 public:
-    static void add_option(std::string option, bool& value)
-	{
-		m_available_options.push_back({ option, value });
+    static void add_option(std::string option, bool& value) {
+		m_available_options.push_back({ .name = option, .is_active = value });
 	}
 
 	ArgsParser(int argc, char* argv[]);
