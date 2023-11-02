@@ -1,10 +1,12 @@
 #include "Auth.h"
 
-#include <elnormous/HTTPRequest.hpp>
+#include <yhirose/httplib.h>
 #include <nlohmann/json.hpp>
 
 #include <iostream>
 #include <string>
+
+#define CPPHTTPLIB_OPENSSL_SUPPORT
 
 void Auth::microsoft_login()
 {
@@ -16,10 +18,10 @@ std::string Auth::get(std::string url)
 {
     try {
 
-        http::Request request { url };
+        httplib::Client http { url };
 
-        const auto response = request.send("GET");
-        std::cout << std::string{ response.body.begin(), response.body.end() } << std::endl;
+        const auto response = http.Get("/asdas");
+        std::cout << response->body << std::endl;
         exit(1);
 
     } catch (const std::exception& e) {
