@@ -1,6 +1,7 @@
 #include "Auth.h"
 
 #include <elnormous/HTTPRequest.hpp>
+#include <nlohmann/json.hpp>
 
 #include <iostream>
 #include <string>
