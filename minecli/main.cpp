@@ -1,31 +1,18 @@
 #include "ArgsParser.h"
 #include "Application.h"
 
-#include <exception>
-#include <iostream>
 #include <string>
+
+static bool attempt_login = false;
 
 int main(int argc, char* argv[])
 {
-	bool auth_with_microsoft = false;
-
-	ArgsParser::add_option("-l", auth_with_microsoft);
 	ArgsParser argsParser(argc, argv);
-	
+    argsParser.add_option(attempt_login , "Attempt authentication", "--login", "-l");
 	argsParser.parse();
 
-    if (auth_with_microsoft) {
-        Application::auth();
-        return EXIT_SUCCESS;
-    }
+    Application app;
+    app.m_perform_auth = attempt_login;
 
-    try {
-        Application app;
-        app.exec();
-    } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        return EXIT_FAILURE;
-    }
-
-	return EXIT_SUCCESS;
+    return app.exec();
 }

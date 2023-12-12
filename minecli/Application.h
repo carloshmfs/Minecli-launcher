@@ -1,11 +1,8 @@
 #pragma once
 
-class Application
-{
-
+class Application {
 public:
-    void exec();
+    bool m_perform_auth = { false };
 
-    static void auth();
-
+    int exec();
 };

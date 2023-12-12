@@ -1,13 +1,23 @@
 #include "Application.h"
 #include "Auth.h"
 
-void Application::exec()
-{
+#include <cstdlib>
+#include <iostream>
+#include <exception>
 
-}
-
-void Application::auth()
+int Application::exec()
 {
-    Auth auth;
-    auth.microsoft_login();
+    try {
+        if (m_perform_auth) {
+            Auth auth;
+            auth.microsoft_login();
+            return EXIT_SUCCESS;
+        }
+
+    } catch (const std::exception& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
