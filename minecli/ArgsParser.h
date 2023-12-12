@@ -3,29 +3,26 @@
 #include <string>
 #include <vector>
 
+struct Option {
+    const std::string long_name;
+    const std::string short_name;
+    const std::string help_string;
+
+    bool& value;
+
+    bool operator==(const std::string& value) const { return this->short_name == value || this->long_name == value; }
+};
+
 class ArgsParser
 {
-
-private:
-    struct Option {
-        std::string name;
-        bool& is_active;
-
-        bool operator==(const std::string& value) const { return this->name == value; }
-    };
-
 public:
-    static void add_option(std::string option, bool& value) {
-		m_available_options.push_back({ .name = option, .is_active = value });
-	}
+    void add_option(bool&, std::string, std::string, std::string);
 
-	ArgsParser(int argc, char* argv[]);
+	ArgsParser(int, char**);
 
     void parse();
 
 private:
-	inline static std::vector<Option> m_available_options;
-
-	std::vector<std::string> m_args;
-
+	std::vector<Option> m_available_options;
+    std::vector<std::string> m_args;
 };
