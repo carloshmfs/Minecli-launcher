@@ -1,3 +1,7 @@
+#microsoft
+/.vs
+/.vscode
+
 # jetbrains
 /.idea
 
@@ -33,7 +37,6 @@
 *.exe
 *.out
 *.app
-/.vs
 
 # Build directory
 /Build

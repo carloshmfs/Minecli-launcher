@@ -5,7 +5,7 @@
 
 static bool attempt_login = false;
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
 	ArgsParser argsParser(argc, argv);
     argsParser.add_option(attempt_login , "Attempt authentication", "--login", "-l");

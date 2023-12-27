@@ -1,27 +1,16 @@
 cmake_minimum_required(VERSION 3.5)
 set(CMAKE_CXX_STANDARD 23)
-
 set(PROJECT_NAME minecli)
-set(SRC_DIR ${PROJECT_NAME})
 
-project(${PROJECT_NAME})
+project(${PROJECT_NAME} CXX)
 
-set(
-    SOURCES
-    ${SRC_DIR}/main.cpp
-    ${SRC_DIR}/ArgsParser.cpp
-    ${SRC_DIR}/Application.cpp
-    ${SRC_DIR}/Auth.cpp
-)
+include(FetchContent)
 
-include_directories(ext)
+FetchContent_Declare(json GIT_REPOSITORY https://github.com/nlohmann/json.git)
+FetchContent_MakeAvailable(json)
 
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall")
+set(SOURCES_DIR ${PROJECT_NAME})
+file(GLOB SOURCES "${SOURCES_DIR}/*.cpp")
+
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-if(MINGW)
-    target_link_libraries(${PROJECT_NAME} ws2_32)
-endif()
-
-target_link_libraries(${PROJECT_NAME} libssl)
-target_link_libraries(${PROJECT_NAME} libcrypto)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json)
