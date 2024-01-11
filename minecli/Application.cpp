@@ -9,8 +9,8 @@ int Application::exec()
 {
     try {
         if (m_perform_auth) {
-            Auth auth;
-            auth.microsoft_login();
+            Auth auth("", "");
+            auth.attempt_auth();
             return EXIT_SUCCESS;
         }
 
