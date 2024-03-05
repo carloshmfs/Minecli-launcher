@@ -14,7 +14,10 @@ public:
 private:
     std::string m_tag_endpoint = "https://login.live.com/oauth20_authorize.srf?client_id=000000004C12AE6F&redirect_uri=https://login.live.com/oauth20_desktop.srf&scope=service::user.auth.xboxlive.com::MBI_SSL&display=touch&response_type=token&locale=en";
     std::string m_tag;
+    std::string m_post_url;
 
-    void retrieve_microsoft_tag();
+    void get_values();
+    void retrieve_microsoft_tag(std::string&);
+    void retrieve_microsoft_post_url(std::string&);
 
 };
