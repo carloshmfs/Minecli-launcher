@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include <cpr/cpr.h>
+#include <cpr/payload.h>
 
 #include <cstdlib>
 #include <iostream>
@@ -12,7 +13,7 @@ int Application::exec()
 {
     try {
         if (m_perform_auth) {
-            attempt_auth();
+            attempt_auth("", "");
             return EXIT_SUCCESS;
         }
 
@@ -35,7 +36,7 @@ void Application::get_values()
     retrieve_microsoft_post_url(r.text);
 }
 
-void Application::retrieve_microsoft_post_url(std::string& api_response_body)
+void Application::retrieve_microsoft_post_url(const std::string& api_response_body)
 {
     std::smatch match;
     if ( ! std::regex_search( api_response_body, match, std::regex("urlPost:'(.+?)'") ) )
@@ -50,7 +51,7 @@ void Application::retrieve_microsoft_post_url(std::string& api_response_body)
     m_post_url = match[1];
 }
 
-void Application::retrieve_microsoft_tag(std::string& api_response_body)
+void Application::retrieve_microsoft_tag(const std::string& api_response_body)
 {
     std::smatch match;
     if ( ! std::regex_search( api_response_body, match, std::regex("value=\"(.+?)\"") ) )
@@ -65,8 +66,25 @@ void Application::retrieve_microsoft_tag(std::string& api_response_body)
     m_tag = match[1];
 }
 
-void Application::attempt_auth()
+void Application::signin_microsoft(const std::string& email, const std::string& password)
+{
+    cpr::Response r = cpr::Post(
+        cpr::Url { m_post_url },
+        cpr::Payload { 
+            {"login", email},
+            {"loginfmt", email},
+            {"passwd", password},
+            {"PPFT", m_tag},
+        }
+    );
+
+    std::cout << m_post_url << std::endl;
+    std::cout << r.text << std::endl;
+}
+
+void Application::attempt_auth(const std::string email, const std::string password)
 { 
     get_values();
+    signin_microsoft(email, password);
 }
 
