@@ -1,3 +1,4 @@
+set_languages("c++23")
 add_rules("plugin.compile_commands.autoupdate", { outputdir = "." })
 
 add_requires("cpr")
