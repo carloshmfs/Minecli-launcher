@@ -1,18 +1,19 @@
-#include "ArgsParser.h"
-#include "Application.h"
-
-#include <string>
-
-static bool attempt_login = false;
+#include "ArgumentsParser.h"
+#include <iostream>
 
 int main(int argc, char** argv)
 {
-	ArgsParser argsParser(argc, argv);
-    argsParser.add_option(attempt_login , "Attempt authentication", "--login", "-l");
-	argsParser.parse();
+    Minecli::ArgumentsParser argsParser(argc, argv);
+    argsParser.add_option("-e", "--exemplo")
+        .required(true)
+        .help("Command de exemplo");
+    
+    try {
+        argsParser.parse();
+    } catch (const std::exception& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
-    Application app;
-    app.m_perform_auth = attempt_login;
-
-    return app.exec();
+    return EXIT_SUCCESS;
 }
