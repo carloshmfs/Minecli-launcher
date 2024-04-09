@@ -14,30 +14,32 @@ ArgumentsParser::ArgumentsParser(int argc, char** argv)
         m_cli_args.push_back(argv[i]);
 }
 
-Option& ArgumentsParser::add_option(std::string name, std::string long_name)
+Option* ArgumentsParser::add_option(std::string name, std::string long_name)
 {
     Option *opt = new Option(name, long_name);
-    m_options.push_back(*opt);
+    m_options.push_back(opt);
 
-    return *opt;
+    return opt;
 }
 
 void ArgumentsParser::parse() const
 {
-    for (const Option& valid_opt : m_options) {
+    for (const Option* valid_opt : m_options) {
         for (const std::string& argument : m_cli_args) {
-            if (valid_opt.get_name() != argument) {
+            if (valid_opt->get_name() != argument) {
                 throw std::runtime_error("Unknown argument");
             }
 
-            switch (valid_opt.get_type()) 
+            switch (valid_opt->get_type()) 
             {
                 case Option::Type::Flag:
-                    valid_opt.dump();
+                    valid_opt->dump();
                     break;
                 case Option::Type::Value:
+                    valid_opt->dump();
                     break;
                 case Option::Type::Command:
+                    valid_opt->dump();
                     break;
 
                 default:

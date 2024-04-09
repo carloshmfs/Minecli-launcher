@@ -24,11 +24,11 @@ public:
 
     void dump() const;
 
-    Option& help(std::string help_msg);
-    Option& choices(std::vector<std::string> values);
-    Option& command(Command& command);
-    Option& required(bool required);
-    Option& set_type(Type type);
+    Option* help(std::string help_msg);
+    Option* choices(std::vector<std::string> values);
+    Option* command(Command& command);
+    Option* required(bool required);
+    Option* set_type(Type type);
 
     const std::string get_name() const { return m_name; }
     const std::string get_long_name() const { return m_long_name; }

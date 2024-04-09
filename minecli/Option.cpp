@@ -25,22 +25,22 @@ void Option::dump() const
     }
 }
 
-Option& Option::help(std::string help_msg)
+Option* Option::help(std::string help_msg)
 {
     m_description = help_msg;
-    return *this;
+    return this;
 }
 
-Option& Option::required(bool required)
+Option* Option::required(bool required)
 {
     m_required = required;
-    return *this;
+    return this;
 }
 
-Option& Option::set_type(Type type)
+Option* Option::set_type(Type type)
 {
     m_type = type;
-    return *this;
+    return this;
 }
 
 }

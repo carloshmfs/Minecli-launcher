@@ -9,9 +9,9 @@ int main(int argc, char** argv)
 {
     ArgumentsParser argsParser(argc, argv);
     argsParser.add_option("-e", "--exemplo")
-        .set_type(Option::Type::Value)
-        .required(true)
-        .help("Commando do tipo Value de exemplo");
+        ->set_type(Option::Type::Value)
+        ->required(true)
+        ->help("Commando do tipo Value de exemplo");
     
 
 

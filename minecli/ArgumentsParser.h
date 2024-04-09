@@ -9,7 +9,7 @@ namespace Minecli {
 
 class ArgumentsParser {
 public:
-    virtual Option& add_option(std::string name, std::string long_name);
+    virtual Option* add_option(std::string name, std::string long_name);
 
     ArgumentsParser(int argc, char** argv);
 
@@ -17,7 +17,7 @@ public:
 
 private:
     std::vector<std::string> m_cli_args;
-    std::vector<Option> m_options;
+    std::vector<Option*> m_options;
 };
 
 }
