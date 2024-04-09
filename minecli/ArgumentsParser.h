@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IArgumentsParser.h"
 #include "Option.h"
 
 #include <string>
@@ -8,13 +7,13 @@
 
 namespace Minecli {
 
-class ArgumentsParser : public IArgumentsParser {
+class ArgumentsParser {
 public:
-    virtual Option& add_option(std::string name, std::string long_name) override;
+    virtual Option& add_option(std::string name, std::string long_name);
 
     ArgumentsParser(int argc, char** argv);
 
-    void parse() const override;
+    void parse() const;
 
 private:
     std::vector<std::string> m_cli_args;
