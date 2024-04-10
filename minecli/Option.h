@@ -22,6 +22,8 @@ public:
     }
     ~Option() = default;
 
+    bool operator==(const std::string& value) const { return value == m_name || value == m_long_name; }
+
     void dump() const;
 
     Option* help(std::string help_msg);
@@ -34,6 +36,7 @@ public:
     const std::string get_long_name() const { return m_long_name; }
     std::string get_help() const { return m_description; }
     Type get_type() const { return m_type; }
+    Command* get_command() const { return m_command; }
 
 private:
     const std::string m_name;

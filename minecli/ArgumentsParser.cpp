@@ -1,6 +1,7 @@
 #include "ArgumentsParser.h"
 #include "Option.h"
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -24,30 +25,25 @@ Option* ArgumentsParser::add_option(std::string name, std::string long_name)
 
 void ArgumentsParser::parse() const
 {
-    for (const Option* valid_opt : m_options) {
-        for (const std::string& argument : m_cli_args) {
-            if (valid_opt->get_name() != argument) {
-                throw std::runtime_error("Unknown argument");
-            }
+    for (const auto& arg : m_cli_args)
+        for (auto& opt : m_options) {
+            if (*opt == arg) {
+                switch (opt->get_type()) 
+                {
+                    case Option::Type::Flag:
+                        break;
+                    case Option::Type::Value:
+                        break;
+                    case Option::Type::Command:
+                        opt->get_command()->handle();
+                        break;
 
-            switch (valid_opt->get_type()) 
-            {
-                case Option::Type::Flag:
-                    valid_opt->dump();
-                    break;
-                case Option::Type::Value:
-                    valid_opt->dump();
-                    break;
-                case Option::Type::Command:
-                    valid_opt->dump();
-                    break;
-
-                default:
-                    throw std::logic_error("Argument dont exist");
-                    break;
+                    default:
+                        throw std::logic_error("The Option has no type setted");
+                        break;
+                }
             }
-        }
-    }
+        };
 }
 
 }

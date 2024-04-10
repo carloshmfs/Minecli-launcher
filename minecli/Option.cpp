@@ -31,6 +31,12 @@ Option* Option::help(std::string help_msg)
     return this;
 }
 
+Option* Option::command(Command& command)
+{
+    m_command = &command;
+    return this;
+}
+
 Option* Option::required(bool required)
 {
     m_required = required;
