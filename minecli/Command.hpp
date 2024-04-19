@@ -3,11 +3,13 @@
 namespace Minecli {
 
 class Command {
+
 public:
-    virtual void handle() = 0;
+    virtual void handle() const = 0;
 
 protected:
     virtual ~Command() = default;
+
 };
 
 }

@@ -1,6 +1,7 @@
-#include "ArgumentsParser.h"
-#include "Option.h"
-#include "LoginCommand.h"
+#include "ArgumentException.hpp"
+#include "ArgumentsParser.hpp"
+#include "LoginCommand.hpp"
+#include "Option.hpp"
 
 #include <iostream>
 
@@ -15,19 +16,21 @@ int main(int argc, char** argv)
         ->required(true)
         ->help("Comando do tipo Option::Type::Value de exemplo");
 
-    argsParser.add_option("-l", "--login")   
-        ->set_type(Option::Type::Command)
+    argsParser.add_option("-l", "--login")
+        ->set_type(Option::Type::Command )
         ->command(*new LoginCommand)
         ->required(true)
         ->help("Nice Description");
 
-
     try {
+        argsParser.dump();
         argsParser.parse();
-    } catch (const std::exception& e) {
-        std::cerr << "ERROR: " << e.what() << std::endl;
-        return EXIT_FAILURE;
+    } 
+
+    catch (const ArgumentException& e) {
+        std::cerr << "ERROR: " << e.getError() << std::endl;
+        return 1;
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }

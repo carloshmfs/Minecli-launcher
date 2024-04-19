@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Command.h"
+#include "Command.hpp"
 
 #include <string>
 #include <vector>
@@ -8,6 +8,7 @@
 namespace Minecli {
 
 class Option {
+
 public:
     enum class Type {
         Value,
@@ -53,6 +54,7 @@ private:
     Type m_type { Type::Flag };
 
     Command* m_command = nullptr;
+
 };
 
 }

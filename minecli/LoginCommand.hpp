@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Command.h"
+#include "Command.hpp"
 
 namespace Minecli {
 
 class LoginCommand : public Command {
+
 public:
-    void handle() override;
+    void handle() const override;
+
 };
 
 }
