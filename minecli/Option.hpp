@@ -33,6 +33,8 @@ public:
     Option* required(bool required);
     Option* set_type(Type type);
 
+    bool isRequired() const;
+
     const std::string get_name() const { return m_name; }
     const std::string get_long_name() const { return m_long_name; }
     std::string get_help() const { return m_description; }

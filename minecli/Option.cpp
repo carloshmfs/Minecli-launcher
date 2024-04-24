@@ -49,5 +49,10 @@ Option* Option::set_type(Type type)
     return this;
 }
 
+bool Option::isRequired() const
+{
+    return m_required;
+}
+
 }
 

@@ -15,12 +15,15 @@ public:
     ArgumentsParser(int argc, char** argv);
 
     void parse() const;
-    const std::string getHelp() const;
+    void sendHelp() const;
+
     void dump() const;
 
 private:
     std::vector<std::string> m_cli_args;
     std::vector<Option*> m_options;
+
+    void findOption(const std::string& argument) const;
 
 };
 
