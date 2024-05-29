@@ -1,4 +1,4 @@
-# ides
+# idea
 /.vs
 /.vscode
 /.idea
@@ -8,6 +8,9 @@
 
 # build
 /build
+
+# binaries dir
+/bin
 
 # clangd indexer
 compile_commands.json
