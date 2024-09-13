@@ -3,6 +3,7 @@
 
 #include <cpr/cpr.h>
 #include <httplib.h>
+#include <nlohmann/json.hpp>
 
 #include <iostream>
 #include <stdexcept>
@@ -16,11 +17,14 @@ void MicrosoftAuth::authenticate()
     handle_authorization_code();
 
     std::cout << "AUTHORIZATION CODE: " << m_authorization_code << std::endl; 
+
+    getAccessToken();
+    // xboxLiveAuth();
 }
 
 std::string MicrosoftAuth::get_authorization_uri() const
 {
-    return m_uri + "/authorize?client_id=" + m_client_id 
+    return m_microsoft_auth_uri + "/authorize?client_id=" + m_client_id 
                  + "&response_type=" + m_response_type 
                  + "&redirect_uri=" + encode_uri_component(m_redirect_uri)
                  + "&response_mode=" + m_response_mode
@@ -60,4 +64,50 @@ void MicrosoftAuth::handle_authorization_code()
     }
 
     m_authorization_code = authorization_code;
+}
+
+void MicrosoftAuth::getAccessToken()
+{
+    cpr::Response response = cpr::Post(
+        cpr::Url { m_xbox_live_uri },
+        cpr::Header { 
+            {"Content-Type", "application/x-www-form-urlencoded"},
+        },
+        cpr::Payload { 
+            {"client_id", m_client_id},
+            {"client_secret", ""},
+            {"code", m_authorization_code},
+            {"grant_type", "authorization_code"},
+            {"redirect_uri", "http://localhost:7272/code"},
+        }
+    );
+
+    std::cout << response.status_code << std::endl;
+    std::cout << response.raw_header << std::endl;
+    std::cout << response.url << std::endl;
+}
+
+void MicrosoftAuth::xboxLiveAuth()
+{
+    nlohmann::json reqBody = {
+        {"Properties", {
+            { "AuthMethod", "RPS" },
+            { "SiteName", "user.auth.xboxlive.com" },
+            { "RpsTicket", "d=" + m_authorization_code }
+        }},
+        {"RelyingParty", "http://auth.xboxlive.com"},
+        {"TokenType", "JWT"}
+    };
+
+    cpr::Response response = cpr::Post(
+        cpr::Url { m_xbox_live_uri },
+        cpr::Header { 
+            {"Content-Type", "application/json"},
+            {"Accept", "application/json"}
+        },
+        cpr::Body { reqBody.dump() }
+    );
+
+    std::cout << response.status_code << std::endl;
+    std::cout << response.raw_header << std::endl;
 }
