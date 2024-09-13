@@ -11,12 +11,17 @@ include(FetchContent)
 
 FetchContent_Declare(json GIT_REPOSITORY https://github.com/nlohmann/json.git
                           GIT_TAG v3.11.3)
+
 FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
                          GIT_TAG 3b15fa82ea74739b574d705fea44959b58142eb8)
-FetchContent_MakeAvailable(json cpr)
+
+FetchContent_Declare(httplib GIT_REPOSITORY https://github.com/yhirose/cpp-httplib.git
+                             GIT_TAG v0.17.3)
+
+FetchContent_MakeAvailable(json cpr httplib)
 
 set(SOURCES_DIR "src")
 file(GLOB SOURCES "${SOURCES_DIR}/*.cpp")
 
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json cpr::cpr)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE nlohmann_json::nlohmann_json cpr::cpr httplib::httplib)
