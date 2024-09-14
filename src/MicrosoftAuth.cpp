@@ -69,22 +69,26 @@ void MicrosoftAuth::handle_authorization_code()
 void MicrosoftAuth::getAccessToken()
 {
     cpr::Response response = cpr::Post(
-        cpr::Url { m_xbox_live_uri },
+        cpr::Url { m_microsoft_auth_uri + "/token" },
         cpr::Header { 
             {"Content-Type", "application/x-www-form-urlencoded"},
         },
         cpr::Payload { 
             {"client_id", m_client_id},
-            {"client_secret", ""},
+            {"scope", m_scope},
             {"code", m_authorization_code},
             {"grant_type", "authorization_code"},
             {"redirect_uri", "http://localhost:7272/code"},
+            {"client_secret", ""}, // TODO: discover how to handle client secret
         }
     );
 
-    std::cout << response.status_code << std::endl;
-    std::cout << response.raw_header << std::endl;
-    std::cout << response.url << std::endl;
+    if (response.status_code != 200) {
+        throw std::runtime_error("Could not get an access token.");
+    }
+
+    nlohmann::json response_json = nlohmann::json::parse(response.text);
+    m_access_token = response_json["access_token"];
 }
 
 void MicrosoftAuth::xboxLiveAuth()
