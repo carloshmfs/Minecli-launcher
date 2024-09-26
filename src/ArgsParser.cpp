@@ -1,24 +1,26 @@
 #include "ArgsParser.h"
 
-#include <algorithm>
+#include <string>
 
-ArgsParser::ArgsParser(int argc, char** argv)
+ArgsParser::ArgsParser(int argc, char* argv[]) 
+    : m_raw_argc(argc)
+    , m_raw_argv(argv)
 {
-    for (int i = 1; i < argc; i++) {
-        m_args.emplace_back(argv[i]);
+    for(int i = 0; i < argc; i++) {
+        m_args.push_back(argv[i]);
     }
 }
 
-void ArgsParser::add_option(bool& value, std::string help_string, std::string long_name, std::string short_name)
+void ArgsParser::addOption(const std::string& option, std::function<void(const ArgsParser&)> callback)
 {
-    m_available_options.emplace_back<Option>({ long_name, short_name, help_string, value });
+    m_options[option] = callback;
 }
 
 void ArgsParser::parse()
 {
-    for (const auto& opt : m_args) {
-        auto option_found = std::find(m_available_options.begin(), m_available_options.end(), opt);
-        if (option_found->long_name == opt || option_found->short_name == opt)
-            option_found->value = true;
+    for (const std::string& arg : m_args) {
+        if (const std::function<void(const ArgsParser&)>& callback = m_options[arg]) {
+            callback(*this);
+        }
     }
 }

@@ -1,18 +1,36 @@
 #include "ArgsParser.h"
 #include "Application.h"
 
-#include <string>
+#include <iostream>
+#include <stdexcept>
 
-static bool attempt_login = false;
-
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
+    bool showHelp = false;
+
 	ArgsParser argsParser(argc, argv);
-    argsParser.add_option(attempt_login , "Attempt authentication", "--login", "-l");
-	argsParser.parse();
+    argsParser.addOption("-h", [&](const ArgsParser& parser) -> void {
+        std::cout << "Usage: minecli [options...]" << std::endl << std::endl;
+        std::cout << "OPTIONS:" << std::endl;
+        std::cout << " -h\t--help\t\tShow this message." << std::endl;
+        std::cout << " -l\t--login\t\tLogin with your microsoft account." << std::endl;
+    });
+
+    try {
+        argsParser.parse();
+    } catch (const std::runtime_error& e) {
+        std::cerr << "ERROR: Wrong argument. " << e.what() << std::endl;
+        return 1;
+    }
 
     Application app;
-    app.m_perform_auth = attempt_login;
 
-    return app.exec();
+    try {
+        app.exec();
+    } catch (const std::runtime_error& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return 1;
+    }
+
+    return 0;
 }

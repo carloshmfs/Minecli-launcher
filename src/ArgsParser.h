@@ -1,28 +1,24 @@
 #pragma once
 
+#include <functional>
 #include <string>
 #include <vector>
-
-struct Option {
-    const std::string long_name;
-    const std::string short_name;
-    const std::string help_string;
-
-    bool& value;
-
-    bool operator==(const std::string& value) const { return this->short_name == value || this->long_name == value; }
-};
+#include <map>
 
 class ArgsParser
 {
 public:
-    void add_option(bool&, std::string, std::string, std::string);
+    ArgsParser(int argc, char* argv[]);
 
-	ArgsParser(int, char**);
+    void addOption(const std::string& option, std::function<void(const ArgsParser&)> callback);
 
     void parse();
 
 private:
-	std::vector<Option> m_available_options;
+    std::map<const std::string, std::function<void(const ArgsParser&)>> m_options;
+
     std::vector<std::string> m_args;
+
+    int m_raw_argc;
+    char** m_raw_argv;
 };
