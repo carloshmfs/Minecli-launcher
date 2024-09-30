@@ -9,17 +9,21 @@ int main(int argc, char* argv[])
     bool showHelp = false;
 
 	ArgsParser argsParser(argc, argv);
-    argsParser.addOption("-h", [&](const ArgsParser& parser) -> void {
+    argsParser.addOption("-h", "--help", false, [](const ArgsParser& parser) -> void {
         std::cout << "Usage: minecli [options...]" << std::endl << std::endl;
         std::cout << "OPTIONS:" << std::endl;
         std::cout << " -h\t--help\t\tShow this message." << std::endl;
         std::cout << " -l\t--login\t\tLogin with your microsoft account." << std::endl;
     });
 
+    argsParser.addOption("-t", "--test", true, [](const ArgsParser& parser) -> void {
+        std::cout << "FINALMENTE CHEGOU AQUI" << std::endl;
+    });
+
     try {
         argsParser.parse();
-    } catch (const std::runtime_error& e) {
-        std::cerr << "ERROR: Wrong argument. " << e.what() << std::endl;
+    } catch (const ArgError& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
         return 1;
     }
 
